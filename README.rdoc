@@ -1,0 +1,6 @@
+= mir
+
+Describe your project here
+
+:include:mir.rdoc
+
