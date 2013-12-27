@@ -11,34 +11,20 @@ end
 
 include GLI::App
 
-program_desc 'Describe your application here'
+program_desc 'Test your Ruby skills! Download Ruby exercises and submit your solutions for grading.'
 
 version Mir::VERSION
 
-desc 'Describe some switch here'
-switch [:s,:switch]
+desc 'Initialize the current directory as a mir project directory'
+command :init do |c|
+  c.action do |global_options, options, args|
+    puts 'initialized current directory for mir'
+  end
+end
 
-desc 'Describe some flag here'
-default_value 'the default'
-arg_name 'The name of the argument'
-flag [:f,:flagname]
-
-desc 'Describe list here'
-arg_name 'Describe arguments to list here'
+desc 'List the available challenges'
 command :list do |c|
-  c.desc 'Describe a switch to list'
-  c.switch :s
-
-  c.desc 'Describe a flag to list'
-  c.default_value 'default'
-  c.flag :f
   c.action do |global_options,options,args|
-
-    # Your command logic here
-     
-    # If you have any errors, just raise them
-    # raise "that command made no sense"
-
     puts "list command ran"
   end
 end
