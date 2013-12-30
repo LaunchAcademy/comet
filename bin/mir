@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 require 'gli'
+require 'yaml'
+
 begin # XXX: Remove this begin/rescue before distributing your app
 require 'mir'
 rescue LoadError
@@ -19,8 +21,6 @@ desc 'Initialize the current directory as a mir project directory'
 command :init do |c|
   c.action do |global_options, options, args|
     unless File.exists?('.mir')
-      require 'yaml'
-
       contents = { 'email' => 'EMAIL GOES HERE', 'token' => 'TOKEN GOES HERE' }
       File.write('.mir', contents.to_yaml)
       puts "Initialized current directory as a mir project directory."
@@ -36,15 +36,28 @@ command :list do |c|
     require 'json'
     require 'net/http'
 
-    url = URI('http://localhost:3000/challenges.json')
-    challenges = JSON.parse(Net::HTTP.get(url), symbolize_names: true)
+    if File.exists?('.mir')
+      config = YAML.load(File.read('.mir'))
 
-    if challenges.empty?
-      puts "No challenges available."
-    else
-      challenges.each do |challenge|
-        puts "#{challenge[:id]}: #{challenge[:name]}"
+      url = URI('http://localhost:3000/challenges.json')
+      request = Net::HTTP::Get.new(url)
+      request['Authorization'] = "Token #{config['token']}"
+
+      response = Net::HTTP.start(url.hostname, url.port) do |http|
+        http.request(request)
       end
+
+      challenges = JSON.parse(response.body, symbolize_names: true)
+
+      if challenges.empty?
+        puts "No challenges available."
+      else
+        challenges.each do |challenge|
+          puts "#{challenge[:id]}: #{challenge[:name]}"
+        end
+      end
+    else
+      puts 'This directory needs to be initialized first.'
     end
   end
 end
