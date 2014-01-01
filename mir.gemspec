@@ -1,6 +1,6 @@
 # Ensure we require the local version and not one we might have installed already
 require File.join([File.dirname(__FILE__),'lib','mir','version.rb'])
-spec = Gem::Specification.new do |s| 
+spec = Gem::Specification.new do |s|
   s.name = 'mir'
   s.version = Mir::VERSION
   s.author = 'Your Name Here'
@@ -22,6 +22,6 @@ lib/mir.rb
   s.executables << 'mir'
   s.add_development_dependency('rake')
   s.add_development_dependency('rdoc')
-  s.add_development_dependency('aruba')
+  s.add_development_dependency('rspec')
   s.add_runtime_dependency('gli','2.8.1')
 end
