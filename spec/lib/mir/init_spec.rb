@@ -26,5 +26,23 @@ describe Mir::Init do
         expect(config.keys).to include('token')
       end
     end
+
+    it 'does not overwrite an existing file' do
+      existing_settings = {
+        'email' => 'foo@example.com',
+        'token' => 'foobarbaz'
+      }
+
+      Dir.mktmpdir do |dir|
+        config_file = File.join(dir, '.mir')
+        File.write(config_file, existing_settings.to_yaml)
+
+        Mir::Init.init_project_dir(dir)
+        current_settings = YAML.load(File.read(config_file))
+
+        expect(current_settings['email']).to eq('foo@example.com')
+        expect(current_settings['token']).to eq('foobarbaz')
+      end
+    end
   end
 end
