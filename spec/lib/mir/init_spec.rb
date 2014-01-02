@@ -44,5 +44,8 @@ describe Mir::Init do
         expect(current_settings['token']).to eq('foobarbaz')
       end
     end
+
+    it 'adds missing settings to config file'
+    it 'errors when the config file is not in correct format'
   end
 end
