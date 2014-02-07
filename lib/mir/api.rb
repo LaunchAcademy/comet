@@ -4,11 +4,21 @@ require 'json'
 module Mir
   class API
     def self.get_challenges(config)
-      url = URI('http://localhost:3000/challenges.json')
+      request_with_token("http://localhost:3000/challenges.json", config['token'])
+    end
 
-      request = Net::HTTP::Get.new(url)
-      request['Authorization'] = "Token #{config['token']}"
-      response = Net::HTTP.start(url.hostname, url.port) do |http|
+    def self.get_challenge(config, id)
+      request_with_token("http://localhost:3000/challenges/#{id}.json", config['token'])
+    end
+
+    private
+
+    def self.request_with_token(url, token)
+      uri = URI(url)
+
+      request = Net::HTTP::Get.new(uri)
+      request['Authorization'] = "Token #{token}"
+      response = Net::HTTP.start(uri.hostname, uri.port) do |http|
         http.request(request)
       end
 
