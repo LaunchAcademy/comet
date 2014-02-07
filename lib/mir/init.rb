@@ -7,7 +7,8 @@ module Mir
         config_file = File.join(dir, '.mir')
 
         if File.exists?(config_file)
-          YAML.load(File.read(config_file))
+          config = YAML.load(File.read(config_file))
+          config.merge({ 'basedir' => dir })
         else
           parent_dir = File.dirname(dir)
 

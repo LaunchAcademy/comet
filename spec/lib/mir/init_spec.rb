@@ -12,30 +12,46 @@ describe Mir::Init do
   end
 
   describe '.find_config' do
-    it 'loads the config file in the given dir' do
-      Dir.mktmpdir do |dir|
-        config_file = File.join(dir, '.mir')
-        File.write(config_file, settings.to_yaml)
+    context 'when config file is in current dir' do
+      it 'loads the config file in the given dir' do
+        Dir.mktmpdir do |dir|
+          config_file = File.join(dir, '.mir')
+          File.write(config_file, settings.to_yaml)
 
-        config = Mir::Init.find_config(dir)
+          config = Mir::Init.find_config(dir)
+
+          expect(config['email']).to eq('foo@example.com')
+          expect(config['token']).to eq('foobarbaz')
+        end
+      end
+    end
+
+    context 'when config file is in a parent dir' do
+      around(:each) do |test|
+        Dir.mktmpdir do |parent_dir|
+          config_file = File.join(parent_dir, '.mir')
+          File.write(config_file, settings.to_yaml)
+
+          @parent_dir = parent_dir
+          @child_dir = File.join(parent_dir, 'child')
+
+          Dir.mkdir(@child_dir)
+
+          test.run
+        end
+      end
+
+      it 'recursively checks parent directories for the file' do
+        config = Mir::Init.find_config(@child_dir)
 
         expect(config['email']).to eq('foo@example.com')
         expect(config['token']).to eq('foobarbaz')
       end
-    end
 
-    it 'checks parent directories for the config file' do
-      Dir.mktmpdir do |parent_dir|
-        config_file = File.join(parent_dir, '.mir')
-        File.write(config_file, settings.to_yaml)
+      it 'includes the directory where the file was found' do
+        config = Mir::Init.find_config(@child_dir)
 
-        child_dir = File.join(parent_dir, 'child')
-        Dir.mkdir(child_dir)
-
-        config = Mir::Init.find_config(child_dir)
-
-        expect(config['email']).to eq('foo@example.com')
-        expect(config['token']).to eq('foobarbaz')
+        expect(config['basedir']).to eq(@parent_dir)
       end
     end
   end
