@@ -18,6 +18,7 @@ program_desc 'Test your Ruby skills! Download Ruby exercises and submit your sol
 version Mir::VERSION
 
 desc 'Initialize the current directory as a mir project directory'
+skips_pre
 command :init do |c|
   c.action do |global_options, options, args|
     Mir::Init.init_project_dir(Dir.pwd)
@@ -57,12 +58,8 @@ command :list do |c|
 end
 
 pre do |global,command,options,args|
-  # Pre logic here
-  # Return true to proceed; false to abort and not call the
-  # chosen command
-  # Use skips_pre before a command to skip this block
-  # on that command only
-  true
+  @config = Mir::Init.find_config(Dir.pwd)
+  !@config.nil?
 end
 
 post do |global,command,options,args|

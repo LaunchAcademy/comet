@@ -3,6 +3,22 @@ require 'yaml'
 module Mir
   class Init
     class << self
+      def find_config(dir)
+        config_file = File.join(dir, '.mir')
+
+        if File.exists?(config_file)
+          YAML.load(File.read(config_file))
+        else
+          parent_dir = File.dirname(dir)
+
+          if parent_dir != '/' && parent_dir != '.'
+            find_config(parent_dir)
+          else
+            nil
+          end
+        end
+      end
+
       def init_project_dir(dirname)
         config_file = File.join(dirname, '.mir')
 
@@ -15,6 +31,10 @@ module Mir
           File.write(config_file, config.to_yaml)
         end
       end
+
+      private
+
+
     end
   end
 end
