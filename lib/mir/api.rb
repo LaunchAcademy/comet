@@ -4,11 +4,21 @@ require 'json'
 module Mir
   class API
     def self.get_challenges(config)
-      request_with_token("http://localhost:3000/challenges.json", config['token'])
+      response = request_with_token("http://localhost:3000/challenges.json",
+        config['token'])
+
+      JSON.parse(response.body, symbolize_names: true)
     end
 
     def self.get_challenge(config, id)
-      request_with_token("http://localhost:3000/challenges/#{id}.json", config['token'])
+      response = request_with_token("http://localhost:3000/challenges/#{id}.json",
+        config['token'])
+
+      if response.code == 200
+        JSON.parse(response.body, symbolize_names: true)
+      else
+        nil
+      end
     end
 
     private
@@ -22,7 +32,7 @@ module Mir
         http.request(request)
       end
 
-      JSON.parse(response.body, symbolize_names: true)
+      response
     end
   end
 end
