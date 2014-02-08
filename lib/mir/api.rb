@@ -14,11 +14,25 @@ module Mir
       response = request_with_token("http://localhost:3000/challenges/#{id}.json",
         config['token'])
 
-      if response.code == 200
+      if response.code == '200'
         JSON.parse(response.body, symbolize_names: true)
       else
         nil
       end
+    end
+
+    def self.download_archive(download_link, dest)
+      uri = URI(download_link)
+
+      Net::HTTP.start(uri.host, uri.port) do |http|
+        resp = http.get(uri.path)
+
+        open(dest, 'wb') do |file|
+          file.write(resp.body)
+        end
+      end
+
+      dest
     end
 
     private

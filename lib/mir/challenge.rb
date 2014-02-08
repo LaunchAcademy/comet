@@ -1,9 +1,17 @@
 class Mir::Challenge
-  attr_reader :id, :name
+  attr_reader :id, :name, :slug, :download_link, :basedir
 
-  def initialize(id, name)
-    @id = id
-    @name = name
+  def initialize(params)
+    @id = params[:id]
+    @name = params[:name]
+    @slug = params[:slug]
+    @download_link = params[:download_link]
+    @basedir = params[:basedir]
+  end
+
+  def download
+    archive = Mir::API.download_archive(download_link, File.join(basedir, "#{slug}.tar.gz"))
+    `tar zxf #{archive} -C #{basedir}`
   end
 
   class << self
@@ -17,7 +25,7 @@ class Mir::Challenge
       if challenge_info.nil?
         raise ArgumentError.new("Could not find challenge with id = #{id}")
       else
-        Mir::Challenge.new(challenge_info[:id], challenge_info[:name])
+        Mir::Challenge.new(challenge_info.merge({ basedir: config['basedir'] }))
       end
     end
   end
