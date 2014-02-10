@@ -7,7 +7,8 @@ module Mir
       response = request_with_token("http://localhost:3000/api/v1/challenges.json",
         config['token'])
 
-      JSON.parse(response.body, symbolize_names: true)
+      results = JSON.parse(response.body, symbolize_names: true)
+      results[:challenges]
     end
 
     def self.get_challenge(config, id)
@@ -15,7 +16,8 @@ module Mir
         config['token'])
 
       if response.code == '200'
-        JSON.parse(response.body, symbolize_names: true)
+        results = JSON.parse(response.body, symbolize_names: true)
+        results[:challenge]
       else
         nil
       end
