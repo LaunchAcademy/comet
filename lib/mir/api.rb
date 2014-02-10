@@ -37,6 +37,26 @@ module Mir
       dest
     end
 
+    def self.submit(config, challenge_id, file_path)
+      uri = URI('http://localhost:3000/api/v1/submissions.json')
+      req = Net::HTTP::Post.new(uri)
+
+      file_name = File.basename(file_path)
+      body = File.read(file_path)
+
+      req['Authorization'] = "Token #{config['token']}"
+
+      req.set_form_data({
+          'submission[challenge_id]' => challenge_id,
+          'submission[file_name]' => file_name,
+          'submission[body]' => body
+        })
+
+      res = Net::HTTP.start(uri.hostname, uri.port) do |http|
+        http.request(req)
+      end
+    end
+
     private
 
     def self.request_with_token(url, token)

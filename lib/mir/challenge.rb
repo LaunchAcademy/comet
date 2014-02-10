@@ -12,6 +12,8 @@ class Mir::Challenge
   def download
     archive = Mir::API.download_archive(download_link, File.join(basedir, "#{slug}.tar.gz"))
     `tar zxf #{archive} -C #{basedir}`
+    File.delete(archive)
+    File.join(basedir, slug)
   end
 
   class << self

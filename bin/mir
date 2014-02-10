@@ -45,7 +45,35 @@ command :fetch do |c|
   c.action do |global_options, options, args|
     challenge_id = args.first
     challenge = Mir::Challenge.find(@config, challenge_id)
-    challenge.download
+    directory = challenge.download
+
+    info = { 'id' => challenge_id.to_i, 'file_name' => "#{challenge.slug}.rb" }
+    info_file = File.join(directory, '.challenge')
+    File.write(info_file, info.to_yaml)
+  end
+end
+
+desc 'Submit challenge'
+command :submit do |c|
+  c.action do |global_options, options, args|
+    info_file = File.join(Dir.pwd, '.challenge')
+
+    if File.exists?(info_file)
+      info = YAML.load(File.read(info_file))
+
+      challenge_id = info['id']
+      solution_file = File.join(Dir.pwd, info['file_name'])
+
+      if File.exists?(solution_file)
+        Mir::API.submit(@config, challenge_id, solution_file)
+      else
+        puts "Missing solution file (#{solution_file})."
+        exit 1
+      end
+    else
+      puts "This is not a challenge directory."
+      exit 1
+    end
   end
 end
 
