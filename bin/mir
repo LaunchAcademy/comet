@@ -21,7 +21,18 @@ desc 'Initialize the current directory as a mir project directory'
 skips_pre
 command :init do |c|
   c.action do |global_options, options, args|
-    Mir::Init.init_project_dir(Dir.pwd)
+    answers = {}
+
+    print 'E-mail: '
+    answers['email'] = gets.chomp
+
+    print 'Token: '
+    answers['token'] = gets.chomp
+
+    print 'Server: '
+    answers['server'] = gets.chomp
+
+    Mir::Init.init_project_dir(Dir.pwd, answers)
   end
 end
 

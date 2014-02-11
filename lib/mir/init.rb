@@ -20,13 +20,14 @@ module Mir
         end
       end
 
-      def init_project_dir(dirname)
+      def init_project_dir(dirname, user_answers)
         config_file = File.join(dirname, '.mir')
 
         unless File.exists?(config_file)
           config = {
-            'email' => 'EMAIL GOES HERE...',
-            'token' => 'TOKEN GOES HERE...'
+            'email' => user_answers['email'],
+            'token' => user_answers['token'],
+            'server' => user_answers['server']
           }
 
           File.write(config_file, config.to_yaml)
