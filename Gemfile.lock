@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    mir (0.0.1)
+    comet (0.0.1)
       gli (= 2.8.1)
 
 GEM
@@ -26,7 +26,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  mir!
+  comet!
   rake
   rdoc
   rspec

@@ -1,5 +1,5 @@
-= mir
+= comet
 
 Generate this with
-    mir rdoc
+    comet rdoc
 After you have described your command line interface

@@ -1,7 +1,7 @@
 require 'net/http'
 require 'json'
 
-module Mir
+module Comet
   class API
     def self.get_challenges(config)
       response = request_with_token("http://#{config['server']}/api/v1/challenges.json",
