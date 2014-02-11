@@ -26,7 +26,9 @@ module Comet
     def self.download_archive(download_link, dest)
       uri = URI(download_link)
 
-      Net::HTTP.start(uri.host, uri.port) do |http|
+      Net::HTTP.start(uri.host, uri.port,
+        use_ssl: uri.scheme == 'https') do |http|
+
         resp = http.get(uri.path)
 
         open(dest, 'wb') do |file|
