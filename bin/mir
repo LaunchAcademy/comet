@@ -1,15 +1,7 @@
 #!/usr/bin/env ruby
 require 'gli'
 require 'yaml'
-
-begin # XXX: Remove this begin/rescue before distributing your app
 require 'mir'
-rescue LoadError
-  STDERR.puts "In development, you need to use `bundle exec bin/mir` to run your app"
-  STDERR.puts "At install-time, RubyGems will make sure lib, etc. are in the load path"
-  STDERR.puts "Feel free to remove this message from bin/mir now"
-  exit 64
-end
 
 include GLI::App
 
