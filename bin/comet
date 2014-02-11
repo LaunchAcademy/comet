@@ -1,15 +1,15 @@
 #!/usr/bin/env ruby
 require 'gli'
 require 'yaml'
-require 'mir'
+require 'comet'
 
 include GLI::App
 
 program_desc 'Test your Ruby skills! Download Ruby exercises and submit your solutions for grading.'
 
-version Mir::VERSION
+version Comet::VERSION
 
-desc 'Initialize the current directory as a mir project directory'
+desc 'Initialize the current directory as a comet project directory'
 skips_pre
 command :init do |c|
   c.action do |global_options, options, args|
@@ -24,14 +24,14 @@ command :init do |c|
     print 'Server: '
     answers['server'] = gets.chomp
 
-    Mir::Init.init_project_dir(Dir.pwd, answers)
+    Comet::Init.init_project_dir(Dir.pwd, answers)
   end
 end
 
 desc 'List the available challenges'
 command :list do |c|
   c.action do |global_options,options,args|
-    challenges = Mir::Challenge.list(@config)
+    challenges = Comet::Challenge.list(@config)
 
     if challenges.empty?
       puts "No challenges available."
@@ -47,7 +47,7 @@ desc 'Download a challenge'
 command :fetch do |c|
   c.action do |global_options, options, args|
     challenge_id = args.first
-    challenge = Mir::Challenge.find(@config, challenge_id)
+    challenge = Comet::Challenge.find(@config, challenge_id)
     directory = challenge.download
 
     info = { 'id' => challenge_id.to_i, 'file_name' => "#{challenge.slug}.rb" }
@@ -68,7 +68,7 @@ command :submit do |c|
       solution_file = File.join(Dir.pwd, info['file_name'])
 
       if File.exists?(solution_file)
-        Mir::API.submit(@config, challenge_id, solution_file)
+        Comet::API.submit(@config, challenge_id, solution_file)
       else
         puts "Missing solution file (#{solution_file})."
         exit 1
@@ -81,7 +81,7 @@ command :submit do |c|
 end
 
 pre do |global,command,options,args|
-  @config = Mir::Init.find_config(Dir.pwd)
+  @config = Comet::Init.find_config(Dir.pwd)
   !@config.nil?
 end
 

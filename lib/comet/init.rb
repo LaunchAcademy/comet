@@ -1,10 +1,10 @@
 require 'yaml'
 
-module Mir
+module Comet
   class Init
     class << self
       def find_config(dir)
-        config_file = File.join(dir, '.mir')
+        config_file = File.join(dir, '.comet')
 
         if File.exists?(config_file)
           config = YAML.load(File.read(config_file))
@@ -21,7 +21,7 @@ module Mir
       end
 
       def init_project_dir(dirname, user_answers)
-        config_file = File.join(dirname, '.mir')
+        config_file = File.join(dirname, '.comet')
 
         unless File.exists?(config_file)
           config = {

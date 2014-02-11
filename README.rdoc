@@ -1,6 +1,5 @@
-= mir
+= comet
 
 Describe your project here
 
-:include:mir.rdoc
-
+:include:comet.rdoc

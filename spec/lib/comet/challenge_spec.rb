@@ -1,7 +1,7 @@
 require 'tmpdir'
-require 'mir'
+require 'comet'
 
-describe Mir::Challenge do
+describe Comet::Challenge do
 
   let(:basedir) { '/tmp' }
 
@@ -14,7 +14,7 @@ describe Mir::Challenge do
   end
 
   let(:challenge) do
-    Mir::Challenge.new({
+    Comet::Challenge.new({
         id: 1,
         name: 'Mini Golf',
         slug: 'mini_golf',
@@ -48,27 +48,27 @@ describe Mir::Challenge do
 
   describe '.find' do
     it 'returns a challenge with the given id' do
-      expect(Mir::API).to receive(:get_challenge).and_return(challenge_info)
+      expect(Comet::API).to receive(:get_challenge).and_return(challenge_info)
 
-      challenge = Mir::Challenge.find(config, 1)
+      challenge = Comet::Challenge.find(config, 1)
 
       expect(challenge.id).to eq(1)
       expect(challenge.name).to eq('Mini Golf')
     end
 
     it 'throws an exception if the challenge could not be found' do
-      expect(Mir::API).to receive(:get_challenge).and_return(nil)
+      expect(Comet::API).to receive(:get_challenge).and_return(nil)
       expect {
-        Mir::Challenge.find(config, 100)
+        Comet::Challenge.find(config, 100)
       }.to raise_error(ArgumentError)
     end
   end
 
   describe '.list' do
     it 'returns a list of challenges' do
-      expect(Mir::API).to receive(:get_challenges).and_return(challenge_list)
+      expect(Comet::API).to receive(:get_challenges).and_return(challenge_list)
 
-      challenges = Mir::Challenge.list(config)
+      challenges = Comet::Challenge.list(config)
 
       expect(challenges.size).to eq(3)
       expect(challenges[1][:name]).to eq("Mini Golf")
@@ -83,7 +83,7 @@ describe Mir::Challenge do
     end
 
     it 'downloads and unpacks challenge in the base directory' do
-      expect(Mir::API).to receive(:download_archive)
+      expect(Comet::API).to receive(:download_archive)
         .with(challenge.download_link, File.join(basedir, 'mini_golf.tar.gz')) do
 
         FileUtils.copy(test_archive, basedir)
