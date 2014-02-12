@@ -64,7 +64,7 @@ module Comet
     def self.request_with_token(url, token)
       uri = URI(url)
 
-      request = Net::HTTP::Get.new(uri)
+      request = Net::HTTP::Get.new(uri.request_uri)
       request['Authorization'] = "Token #{token}"
       response = Net::HTTP.start(uri.hostname, uri.port) do |http|
         http.request(request)
