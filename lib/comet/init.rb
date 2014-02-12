@@ -27,7 +27,7 @@ module Comet
           config = {
             'email' => user_answers['email'],
             'token' => user_answers['token'],
-            'server' => user_answers['server']
+            'server' => normalize_url(user_answers['server'])
           }
 
           File.write(config_file, config.to_yaml)
@@ -36,7 +36,13 @@ module Comet
 
       private
 
-
+      def normalize_url(input)
+        unless input.include?('://')
+          'http://' + input
+        else
+          input
+        end
+      end
     end
   end
 end
