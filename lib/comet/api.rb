@@ -4,7 +4,7 @@ require 'json'
 module Comet
   class API
     def self.get_challenges(config)
-      response = request_with_token("http://#{config['server']}/api/v1/challenges.json",
+      response = request_with_token("#{config['server']}/api/v1/challenges.json",
         config['token'])
 
       results = JSON.parse(response.body, symbolize_names: true)
@@ -12,7 +12,7 @@ module Comet
     end
 
     def self.get_challenge(config, id)
-      response = request_with_token("http://#{config['server']}/api/v1/challenges/#{id}.json",
+      response = request_with_token("#{config['server']}/api/v1/challenges/#{id}.json",
         config['token'])
 
       if response.code == '200'
@@ -40,7 +40,7 @@ module Comet
     end
 
     def self.submit(config, challenge_id, file_path)
-      uri = URI("http://#{config['server']}/api/v1/submissions.json")
+      uri = URI("#{config['server']}/api/v1/submissions.json")
       req = Net::HTTP::Post.new(uri)
 
       file_name = File.basename(file_path)
