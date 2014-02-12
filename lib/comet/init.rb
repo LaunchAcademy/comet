@@ -23,20 +23,27 @@ module Comet
       def init_project_dir(dirname, user_answers)
         config_file = File.join(dirname, '.comet')
 
-        unless File.exists?(config_file)
-          config = {
-            'email' => user_answers['email'],
-            'token' => user_answers['token'],
-            'server' => user_answers['server']
-          }
-
-          File.write(config_file, config.to_yaml)
+        if File.exists?(config_file)
+          existing_settings = YAML.load(File.read(config_file))
+        else
+          existing_settings = {}
         end
+
+        settings = existing_settings.merge(user_answers)
+        settings['server'] = normalize_url(settings['server']) if settings['server']
+
+        File.write(config_file, settings.to_yaml)
       end
 
       private
 
-
+      def normalize_url(input)
+        unless input.include?('://')
+          'http://' + input
+        else
+          input
+        end
+      end
     end
   end
 end

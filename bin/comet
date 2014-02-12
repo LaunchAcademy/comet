@@ -2,6 +2,7 @@
 require 'gli'
 require 'yaml'
 require 'comet'
+require 'helpers'
 
 include GLI::App
 
@@ -13,16 +14,11 @@ desc 'Initialize the current directory as a comet project directory'
 skips_pre
 command :init do |c|
   c.action do |global_options, options, args|
-    answers = {}
+    answers = Comet::Init.find_config(Dir.pwd) || {}
 
-    print 'E-mail: '
-    answers['email'] = gets.chomp
-
-    print 'Token: '
-    answers['token'] = gets.chomp
-
-    print 'Server: '
-    answers['server'] = gets.chomp
+    ['email', 'token', 'server'].each do |setting|
+      answers[setting] = prompt_for_setting(setting, answers)
+    end
 
     Comet::Init.init_project_dir(Dir.pwd, answers)
   end

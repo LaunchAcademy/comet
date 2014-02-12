@@ -6,8 +6,8 @@ require 'comet'
 describe Comet::Init do
   let(:settings) do
     {
-    'email' => 'foo@example.com',
-    'token' => 'foobarbaz'
+      'email' => 'foo@example.com',
+      'token' => 'foobarbaz'
     }
   end
 
@@ -58,7 +58,7 @@ describe Comet::Init do
 
   describe '.init_project_dir' do
     let(:answers) do
-      { 'email' => 'bar@example.com', 'token' => 'bazbatfoo', 'server' => 'example.com' }
+      { 'email' => 'bar@example.com', 'token' => 'bazbatfoo', 'server' => 'http://example.com' }
     end
 
     it 'creates a .comet file if doesnt already exist' do
@@ -74,27 +74,57 @@ describe Comet::Init do
     it 'writes settings from user answers' do
       Dir.mktmpdir do |dir|
         Comet::Init.init_project_dir(dir, answers)
-
-        config_file = File.join(dir, '.comet')
-        config = YAML.load(File.read(config_file))
+        config = load_config(dir)
 
         expect(config['email']).to eq('bar@example.com')
         expect(config['token']).to eq('bazbatfoo')
-        expect(config['server']).to eq('example.com')
+        expect(config['server']).to eq('http://example.com')
       end
     end
 
-    it 'does not overwrite an existing file' do
-      Dir.mktmpdir do |dir|
-        config_file = File.join(dir, '.comet')
-        File.write(config_file, settings.to_yaml)
+    context 'when config already exists' do
 
-        Comet::Init.init_project_dir(dir, answers)
-        current_settings = YAML.load(File.read(config_file))
+      around :each do |example|
+        Dir.mktmpdir do |dir|
+          @dir = dir
+
+          @config_file = File.join(dir, '.comet')
+          File.write(@config_file, settings.to_yaml)
+
+          example.run
+        end
+      end
+
+      it 'overwrites existing settings when new value given' do
+        Comet::Init.init_project_dir(@dir, answers)
+        current_settings = YAML.load(File.read(@config_file))
+
+        expect(current_settings['email']).to eq('bar@example.com')
+        expect(current_settings['token']).to eq('bazbatfoo')
+      end
+
+      it 'merges with existing settings' do
+        Comet::Init.init_project_dir(@dir, { 'server' => 'http://localhost:3000' })
+        current_settings = YAML.load(File.read(@config_file))
 
         expect(current_settings['email']).to eq('foo@example.com')
         expect(current_settings['token']).to eq('foobarbaz')
+        expect(current_settings['server']).to eq('http://localhost:3000')
       end
     end
+
+    it 'prepends a http protocol if none given for server' do
+      Dir.mktmpdir do |dir|
+        Comet::Init.init_project_dir(dir, { 'server' => 'example.com' })
+        config = load_config(dir)
+
+        expect(config['server']).to eq('http://example.com')
+      end
+    end
+  end
+
+  def load_config(dir)
+    config_file = File.join(dir, '.comet')
+    YAML.load(File.read(config_file))
   end
 end
