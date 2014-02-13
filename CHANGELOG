@@ -1,0 +1,10 @@
+== 0.0.3
+* Works with Ruby 1.9.3 now.
+* Accepts server names with or without http:// prefix.
+* Displays the topic along with each challenge.
+
+== 0.0.2
+* Correctly handles HTTPS downloads.
+
+== 0.0.1
+* Initial release.

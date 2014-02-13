@@ -16,6 +16,7 @@ lib/comet/api.rb
 lib/comet/challenge.rb
 lib/comet/init.rb
 lib/comet/version.rb
+lib/helpers.rb
   )
   s.require_paths << 'lib'
   s.has_rdoc = true
