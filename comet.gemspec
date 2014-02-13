@@ -28,4 +28,5 @@ lib/helpers.rb
   s.add_development_dependency('rdoc')
   s.add_development_dependency('rspec')
   s.add_runtime_dependency('gli','2.8.1')
+  s.add_runtime_dependency('rest-client')
 end
