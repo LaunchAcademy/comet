@@ -33,7 +33,8 @@ command :list do |c|
       puts "No challenges available."
     else
       challenges.each do |challenge|
-        puts "#{challenge[:id]}: #{challenge[:name]}"
+        printf("\e[33m%4d\e[0m) \e[32m%s\e[0m: %s\n",
+          challenge[:id], challenge[:topic], challenge[:name])
       end
     end
   end
