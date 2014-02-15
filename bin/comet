@@ -34,7 +34,7 @@ command :list do |c|
     else
       challenges.each do |challenge|
         printf("\e[33m%4d\e[0m) \e[32m%s\e[0m: %s\n",
-          challenge[:id], challenge[:topic], challenge[:name])
+          challenge[:id], challenge[:topic_name], challenge[:name])
       end
     end
   end
