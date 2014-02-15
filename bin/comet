@@ -57,17 +57,39 @@ desc 'Submit challenge'
 command :submit do |c|
   c.action do |global_options, options, args|
     require 'rest_client'
+    require 'tmpdir'
 
-    payload = {
-      submission: {
-        challenge_id: 1,
-        archive: File.new(File.join(Dir.pwd, 'spec/data/mini_golf.tar.gz'))
-      }
-    }
+    challenge_file = File.join(Dir.pwd, '.challenge')
 
-    headers = { 'Authorization' => "Token #{@config['token']}" }
+    if File.exists?(challenge_file)
+      challenge_info = YAML.load(File.read(challenge_file))
 
-    RestClient.post("#{@config['server']}/api/v1/submissions.json", payload, headers)
+      parent_dir = File.dirname(Dir.pwd)
+      challenge_dir = File.basename(Dir.pwd)
+
+      Dir.mktmpdir do |tmpdir|
+        submission_file = File.join(tmpdir, 'submission.tar.gz')
+        if system("tar zcf #{submission_file} -C #{parent_dir} #{challenge_dir}")
+          payload = {
+            submission: {
+              challenge_id: challenge_info['id'],
+              archive: File.new(submission_file)
+            }
+          }
+
+          headers = { 'Authorization' => "Token #{@config['token']}" }
+
+          RestClient.post("#{@config['server']}/api/v1/submissions.json", payload, headers)
+        else
+          puts "Unable to create submission archive."
+          exit 1
+        end
+      end
+
+    else
+      puts "Not a challenge directory."
+      exit 1
+    end
   end
 end
 
