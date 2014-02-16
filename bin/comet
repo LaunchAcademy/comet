@@ -64,10 +64,11 @@ command :submit do |c|
 
     if File.exists?(challenge_file)
       challenge_info = YAML.load(File.read(challenge_file))
+      lib_dir = File.join(current_dir, 'lib')
 
       Dir.mktmpdir do |tmpdir|
         submission_file = File.join(tmpdir, 'submission.tar.gz')
-        if system("tar zcf #{submission_file} -C #{current_dir} lib")
+        if system("tar zcf #{submission_file} -C #{lib_dir} .")
           payload = {
             submission: {
               challenge_id: challenge_info['id'],
