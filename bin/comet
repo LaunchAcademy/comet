@@ -59,17 +59,15 @@ command :submit do |c|
     require 'rest_client'
     require 'tmpdir'
 
-    challenge_file = File.join(Dir.pwd, '.challenge')
+    current_dir = Dir.pwd
+    challenge_file = File.join(current_dir, '.challenge')
 
     if File.exists?(challenge_file)
       challenge_info = YAML.load(File.read(challenge_file))
 
-      parent_dir = File.dirname(Dir.pwd)
-      challenge_dir = File.basename(Dir.pwd)
-
       Dir.mktmpdir do |tmpdir|
         submission_file = File.join(tmpdir, 'submission.tar.gz')
-        if system("tar zcf #{submission_file} -C #{parent_dir} #{challenge_dir}")
+        if system("tar zcf #{submission_file} -C #{current_dir} lib")
           payload = {
             submission: {
               challenge_id: challenge_info['id'],

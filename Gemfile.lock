@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    comet (0.0.2)
+    comet (0.0.3)
       gli (= 2.8.1)
       rest-client
 
