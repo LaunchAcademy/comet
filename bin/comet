@@ -56,22 +56,37 @@ end
 desc 'Submit challenge'
 command :submit do |c|
   c.action do |global_options, options, args|
-    info_file = File.join(Dir.pwd, '.challenge')
+    require 'rest_client'
+    require 'tmpdir'
 
-    if File.exists?(info_file)
-      info = YAML.load(File.read(info_file))
+    current_dir = Dir.pwd
+    challenge_file = File.join(current_dir, '.challenge')
 
-      challenge_id = info['id']
-      solution_file = File.join(Dir.pwd, info['file_name'])
+    if File.exists?(challenge_file)
+      challenge_info = YAML.load(File.read(challenge_file))
+      lib_dir = File.join(current_dir, 'lib')
 
-      if File.exists?(solution_file)
-        Comet::API.submit(@config, challenge_id, solution_file)
-      else
-        puts "Missing solution file (#{solution_file})."
-        exit 1
+      Dir.mktmpdir do |tmpdir|
+        submission_file = File.join(tmpdir, 'submission.tar.gz')
+        if system("tar zcf #{submission_file} -C #{lib_dir} .")
+          payload = {
+            submission: {
+              challenge_id: challenge_info['id'],
+              archive: File.new(submission_file)
+            }
+          }
+
+          headers = { 'Authorization' => "Token #{@config['token']}" }
+
+          RestClient.post("#{@config['server']}/api/v1/submissions.json", payload, headers)
+        else
+          puts "Unable to create submission archive."
+          exit 1
+        end
       end
+
     else
-      puts "This is not a challenge directory."
+      puts "Not a challenge directory."
       exit 1
     end
   end

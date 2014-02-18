@@ -1,8 +1,9 @@
 PATH
   remote: .
   specs:
-    comet (0.0.2)
+    comet (0.0.3)
       gli (= 2.8.1)
+      rest-client
 
 GEM
   remote: https://rubygems.org/
@@ -10,9 +11,12 @@ GEM
     diff-lcs (1.2.5)
     gli (2.8.1)
     json (1.8.1)
+    mime-types (2.1)
     rake (10.1.1)
     rdoc (4.0.1)
       json (~> 1.4)
+    rest-client (1.6.7)
+      mime-types (>= 1.16)
     rspec (2.14.1)
       rspec-core (~> 2.14.0)
       rspec-expectations (~> 2.14.0)
