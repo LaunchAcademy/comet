@@ -13,3 +13,16 @@ def prompt_for_setting(name, existing_settings)
     existing_settings[name]
   end
 end
+
+def difficulty_to_string(difficult_rating)
+  case difficult_rating
+  when 1
+    "\e[32measy\e[0m"
+  when 2
+    "\e[33mintermediate\e[0m"
+  when 3
+    "\e[31mhard\e[0m"
+  else
+    ""
+  end
+end
