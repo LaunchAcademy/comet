@@ -3,6 +3,7 @@ require 'gli'
 require 'yaml'
 require 'comet'
 require 'helpers'
+require 'openssl'
 
 include GLI::App
 
