@@ -57,6 +57,8 @@ command :fetch do |c|
     info = { 'id' => challenge_id.to_i, 'file_name' => "#{challenge.slug}.rb" }
     info_file = File.join(directory, '.challenge')
     File.write(info_file, info.to_yaml)
+
+    puts "Downloaded challenge to #{directory}."
   end
 end
 
@@ -72,6 +74,7 @@ command :submit do |c|
     if File.exists?(challenge_file)
       challenge_info = YAML.load(File.read(challenge_file))
       lib_dir = File.join(current_dir, 'lib')
+      slug = File.basename(current_dir)
 
       Dir.mktmpdir do |tmpdir|
         submission_file = File.join(tmpdir, 'submission.tar.gz')
@@ -86,6 +89,8 @@ command :submit do |c|
           headers = { 'Authorization' => "Token #{@config['token']}" }
 
           RestClient.post("#{@config['server']}/api/v1/submissions.json", payload, headers)
+
+          puts "Submitted solution for #{slug}."
         else
           puts "Unable to create submission archive."
           exit 1
