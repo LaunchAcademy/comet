@@ -1,3 +1,6 @@
+== 0.0.5
+* Require openssl in bin/comet
+
 == 0.0.4
 * Uploads only `lib` directory.
 * Displays message when downloading and uploading submissions.
