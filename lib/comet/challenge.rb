@@ -1,3 +1,5 @@
+require 'shellwords'
+
 class Comet::Challenge
   attr_reader :id, :name, :slug, :download_link, :basedir
 
@@ -11,7 +13,7 @@ class Comet::Challenge
 
   def download
     archive = Comet::API.download_archive(download_link, File.join(basedir, "#{slug}.tar.gz"))
-    `tar zxf #{archive} -C #{basedir}`
+    `tar zxf #{Shellwords.escape(archive)} -C #{Shellwords.escape(basedir)}`
     File.delete(archive)
     File.join(basedir, slug)
   end
