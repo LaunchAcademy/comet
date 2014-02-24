@@ -1,3 +1,7 @@
+== 0.0.6
+* Fixed a bug where katas could not be downloaded if there were spaces in the path.
+* Add the "comet test" command to run the test suite.
+
 == 0.0.5
 * Require openssl in bin/comet
 
