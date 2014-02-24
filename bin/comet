@@ -56,11 +56,13 @@ command :fetch do |c|
     challenge = Comet::Challenge.find(@config, challenge_id)
     directory = challenge.download
 
-    info = { 'id' => challenge_id.to_i, 'file_name' => "#{challenge.slug}.rb" }
-    info_file = File.join(directory, '.challenge')
+    info_file = File.join(directory, '.kata')
+    info = YAML.load(File.read(info_file))
+    info['id'] = challenge_id.to_i
+
     File.write(info_file, info.to_yaml)
 
-    puts "Downloaded challenge to #{directory}."
+    puts "Downloaded kata to #{directory}."
   end
 end
 
