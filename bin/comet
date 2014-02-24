@@ -4,6 +4,7 @@ require 'yaml'
 require 'comet'
 require 'helpers'
 require 'openssl'
+require 'shellwords'
 
 include GLI::App
 
@@ -79,7 +80,7 @@ command :submit do |c|
 
       Dir.mktmpdir do |tmpdir|
         submission_file = File.join(tmpdir, 'submission.tar.gz')
-        if system("tar zcf #{submission_file} -C #{lib_dir} .")
+        if system("tar zcf #{Shellwords.escape(submission_file)} -C #{Shellwords.escape(lib_dir)} .")
           payload = {
             submission: {
               challenge_id: challenge_info['id'],
