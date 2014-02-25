@@ -26,8 +26,8 @@ lib/helpers.rb
   s.rdoc_options << '--title' << 'comet' << '--main' << 'README.rdoc' << '-ri'
   s.bindir = 'bin'
   s.executables << 'comet'
-  s.add_development_dependency('rake', '~> 0')
-  s.add_development_dependency('rdoc', '~> 0')
+  s.add_development_dependency('rake')
+  s.add_development_dependency('rdoc')
   s.add_runtime_dependency('rspec', '~> 2.14')
   s.add_runtime_dependency('gli','2.8.1')
   s.add_runtime_dependency('rest-client', '~> 1.6')
