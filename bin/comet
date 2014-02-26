@@ -101,10 +101,10 @@ command :submit do |c|
     require 'tmpdir'
 
     current_dir = Dir.pwd
-    challenge_file = File.join(current_dir, '.challenge')
+    kata_file = File.join(current_dir, '.kata')
 
-    if File.exists?(challenge_file)
-      challenge_info = YAML.load(File.read(challenge_file))
+    if File.exists?(kata_file)
+      kata_info = YAML.load(File.read(kata_file))
       lib_dir = File.join(current_dir, 'lib')
       slug = File.basename(current_dir)
 
@@ -113,7 +113,7 @@ command :submit do |c|
         if system("tar zcf #{Shellwords.escape(submission_file)} -C #{Shellwords.escape(lib_dir)} .")
           payload = {
             submission: {
-              challenge_id: challenge_info['id'],
+              challenge_id: kata_info['id'],
               archive: File.new(submission_file)
             }
           }
@@ -130,7 +130,7 @@ command :submit do |c|
       end
 
     else
-      puts "Not a challenge directory."
+      puts "Not a kata directory."
       exit 1
     end
   end
