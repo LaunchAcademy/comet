@@ -34,11 +34,7 @@ command :list do |c|
     if challenges.empty?
       puts "No challenges available."
     else
-      sorted_challenges = challenges.sort_by do |challenge|
-        [challenge[:topic_name], challenge[:difficulty]]
-      end
-
-      sorted_challenges.each do |challenge|
+      challenges.each do |challenge|
         printf("(%4d) \e[34m%s\e[0m: %s (%s)\n",
           challenge[:id],
           challenge[:topic_name],
