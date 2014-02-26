@@ -1,9 +1,10 @@
 PATH
   remote: .
   specs:
-    comet (0.0.5)
+    comet (0.0.6)
       gli (= 2.8.1)
-      rest-client
+      rest-client (~> 1.6)
+      rspec (~> 2.14)
 
 GEM
   remote: https://rubygems.org/
@@ -33,4 +34,3 @@ DEPENDENCIES
   comet!
   rake
   rdoc
-  rspec
