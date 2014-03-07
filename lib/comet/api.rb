@@ -1,8 +1,16 @@
 require 'net/http'
 require 'json'
+require 'rest-client'
 
 module Comet
   class API
+    RUBYGEMS_URL = 'https://rubygems.org/api/v1/gems/comet.json'
+
+    def self.latest_gem_version
+      results = JSON.parse(RestClient.get(RUBYGEMS_URL))
+      results['version']
+    end
+
     def self.get_challenges(config)
       response = request_with_token("#{config['server']}/api/v1/challenges.json",
         config['token'])

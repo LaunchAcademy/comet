@@ -1,0 +1,46 @@
+{
+  "name":"comet",
+  "downloads":899,
+  "version":"0.0.7",
+  "version_downloads":117,
+  "platform":"ruby",
+  "authors":"Adam Sheehan",
+  "info":"Command-line interface to download various code exercises and their test suites. When the tests are all passing submit your solution for grading.",
+  "licenses":[
+    "MIT"
+  ],
+  "project_uri":"http://rubygems.org/gems/comet",
+  "gem_uri":"http://rubygems.org/gems/comet-0.0.7.gem",
+  "homepage_uri":"http://www.launchacademy.com",
+  "wiki_uri":null,
+  "documentation_uri":null,
+  "mailing_list_uri":null,
+  "source_code_uri":null,
+  "bug_tracker_uri":null,
+  "dependencies":{
+    "development":[
+      {
+        "name":"rake",
+        "requirements":">= 0"
+      },
+      {
+        "name":"rdoc",
+        "requirements":">= 0"
+      }
+    ],
+    "runtime":[
+      {
+        "name":"gli",
+        "requirements":"= 2.8.1"
+      },
+      {
+        "name":"rest-client",
+        "requirements":"~> 1.6"
+      },
+      {
+        "name":"rspec",
+        "requirements":"~> 2.14"
+      }
+    ]
+  }
+}
