@@ -18,6 +18,7 @@ lib/comet/api.rb
 lib/comet/challenge.rb
 lib/comet/init.rb
 lib/comet/version.rb
+lib/comet/runner.rb
 lib/helpers.rb
   )
   s.require_paths << 'lib'

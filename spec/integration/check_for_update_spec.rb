@@ -41,17 +41,30 @@ describe 'check for update' do
   end
 
   context 'when a newer version exists' do
+    let(:next_version) do
+      Comet::Version.build(
+        Comet::MAJOR_VERSION,
+        Comet::MINOR_VERSION,
+        Comet::PATCH_LEVEL + 1)
+    end
+
     before :each do
-      Comet::API.stub(:latest_gem_version).and_return('0.0.8')
+      Comet::API.stub(:latest_gem_version).and_return(next_version)
     end
 
     let(:notice) do
-      'NOTICE: An updated version of comet exists. Run `gem update comet` to upgrade.'
+      'NOTICE: An updated version of comet exists. ' +
+        'Run `gem update comet` to upgrade.'
     end
 
     it 'notifies user to update the gem' do
       stdout, stderr = capture_output { Comet::Runner.go(['list'], tmpdir) }
       expect(stderr).to include(notice)
+    end
+
+    it 'does not notify the user when running a test suite' do
+      stdout, stderr = capture_output { Comet::Runner.go(['test'], tmpdir) }
+      expect(stderr).to_not include(notice)
     end
   end
 end

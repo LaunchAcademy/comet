@@ -7,11 +7,10 @@ require 'shellwords'
 module Comet
   class Runner
     extend GLI::App
+    version Comet::VERSION
 
     def self.go(args, cwd)
       program_desc 'Test your Ruby skills! Download Ruby exercises and submit your solutions for grading.'
-
-      version Comet::VERSION
 
       desc 'Initialize the current directory as a comet project directory'
       skips_pre
@@ -134,8 +133,14 @@ module Comet
       end
 
       pre do |global,command,options,args|
-        if Comet::Version.is_more_recent(Comet::API.latest_gem_version)
-          $stderr.puts "\e[33mNOTICE: An updated version of comet exists. Run `gem update comet` to upgrade.\e[0m"
+        # Only query for newer versions when running commands that makes
+        # network calls.
+        if [:submit, :fetch, :list].include?(command.name)
+          latest_version = Comet::API.latest_gem_version
+          if Comet::Version.is_more_recent(latest_version)
+            $stderr.puts "\e[33mNOTICE: An updated version of comet exists. " +
+              "Run `gem update comet` to upgrade.\e[0m"
+          end
         end
 
         @config = Comet::Init.find_config(cwd)
