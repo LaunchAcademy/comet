@@ -54,5 +54,4 @@ describe 'check for update' do
       expect(stderr).to include(notice)
     end
   end
-
 end

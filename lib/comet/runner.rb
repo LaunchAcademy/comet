@@ -134,7 +134,7 @@ module Comet
       end
 
       pre do |global,command,options,args|
-        if Comet::API.latest_gem_version > Comet::VERSION
+        if Comet::Version.is_more_recent(Comet::API.latest_gem_version)
           $stderr.puts "\e[33mNOTICE: An updated version of comet exists. Run `gem update comet` to upgrade.\e[0m"
         end
 
@@ -142,15 +142,7 @@ module Comet
         !@config.nil?
       end
 
-      post do |global,command,options,args|
-        # Post logic here
-        # Use skips_post before a command to skip this
-        # block on that command only
-      end
-
       on_error do |exception|
-        # Error logic here
-        # return false to skip default error handling
         raise exception
       end
 
