@@ -148,7 +148,14 @@ module Comet
       end
 
       on_error do |exception|
-        raise exception
+        case exception
+        when Comet::UnauthorizedError
+          $stderr.puts "\e[31mERROR: Invalid credentials. " +
+            "Verify that the e-mail, token, and server are correctly " +
+            "configured in #{File.join(@config['basedir'], '.comet')}\e[0m"
+        else
+          raise exception
+        end
       end
 
       run(args)

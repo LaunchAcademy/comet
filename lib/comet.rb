@@ -1,3 +1,4 @@
+require 'comet/exceptions'
 require 'comet/api'
 require 'comet/challenge'
 require 'comet/version'

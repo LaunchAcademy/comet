@@ -70,15 +70,11 @@ module Comet
     private
 
     def self.request_with_token(url, token)
-      uri = URI(url)
-
-      request = Net::HTTP::Get.new(uri.request_uri)
-      request['Authorization'] = "Token #{token}"
-      response = Net::HTTP.start(uri.hostname, uri.port) do |http|
-        http.request(request)
+      begin
+        RestClient.get(url, { 'Authorization' => "Token #{token}" })
+      rescue RestClient::Unauthorized => e
+        raise Comet::UnauthorizedError
       end
-
-      response
     end
   end
 end

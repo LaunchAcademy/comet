@@ -1,5 +1,4 @@
 require 'spec_helper'
-require 'comet'
 
 describe 'check for update' do
 

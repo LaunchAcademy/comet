@@ -1,4 +1,5 @@
 require 'rest-client'
+require 'comet'
 
 Dir[File.join(File.dirname(__FILE__), 'support/**/*.rb')].each { |f| require f }
 
