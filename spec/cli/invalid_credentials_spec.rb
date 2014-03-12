@@ -8,7 +8,7 @@ describe 'invalid credentials' do
     end
 
     before :each do
-      Comet::API.stub(:get_challenges).and_raise(Comet::UnauthorizedError)
+      Comet::API.stub(:get_katas).and_raise(Comet::UnauthorizedError)
     end
 
     it 'displays a useful error message' do

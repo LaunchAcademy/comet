@@ -11,7 +11,7 @@ module Comet
       results['version']
     end
 
-    def self.get_challenges(config)
+    def self.get_katas(config)
       response = request_with_token("#{config['server']}/api/v1/challenges.json",
         config['token'])
 
@@ -19,7 +19,7 @@ module Comet
       results[:challenges]
     end
 
-    def self.get_challenge(config, id)
+    def self.get_kata(config, id)
       response = request_with_token("#{config['server']}/api/v1/challenges/#{id}.json",
         config['token'])
 
@@ -47,7 +47,7 @@ module Comet
       dest
     end
 
-    def self.submit(config, challenge_id, file_path)
+    def self.submit(config, kata_id, file_path)
       uri = URI("#{config['server']}/api/v1/submissions.json")
       req = Net::HTTP::Post.new(uri)
 
@@ -57,7 +57,7 @@ module Comet
       req['Authorization'] = "Token #{config['token']}"
 
       req.set_form_data({
-          'submission[challenge_id]' => challenge_id,
+          'submission[challenge_id]' => kata_id,
           'submission[file_name]' => file_name,
           'submission[body]' => body
         })

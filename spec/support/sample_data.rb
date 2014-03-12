@@ -8,7 +8,7 @@ module SampleData
     }
   end
 
-  def challenges_index_sample
+  def katas_index_sample
     [{
         id: 1,
         name: "Calculator"

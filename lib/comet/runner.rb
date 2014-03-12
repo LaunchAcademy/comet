@@ -26,35 +26,35 @@ module Comet
         end
       end
 
-      desc 'List the available challenges'
+      desc 'List the available katas'
       command :list do |c|
         c.action do |global_options,options,args|
-          challenges = Comet::Challenge.list(@config)
+          katas = Comet::Kata.list(@config)
 
-          if challenges.empty?
-            puts "No challenges available."
+          if katas.empty?
+            puts "No katas available."
           else
-            challenges.each do |challenge|
+            katas.each do |kata|
               printf("(%4d) \e[34m%s\e[0m: %s (%s)\n",
-                challenge[:id],
-                challenge[:topic_name],
-                challenge[:name],
-                difficulty_to_string(challenge[:difficulty]))
+                kata[:id],
+                kata[:topic_name],
+                kata[:name],
+                difficulty_to_string(kata[:difficulty]))
             end
           end
         end
       end
 
-      desc 'Download a challenge'
+      desc 'Download a kata'
       command :fetch do |c|
         c.action do |global_options, options, args|
-          challenge_id = args.first
-          challenge = Comet::Challenge.find(@config, challenge_id)
-          directory = challenge.download
+          kata_id = args.first
+          kata = Comet::Kata.find(@config, kata_id)
+          directory = kata.download
 
           info_file = File.join(directory, '.kata')
           info = YAML.load(File.read(info_file))
-          info['id'] = challenge_id.to_i
+          info['id'] = kata_id.to_i
 
           File.write(info_file, info.to_yaml)
 
@@ -85,12 +85,12 @@ module Comet
 
             exec("#{runner} #{test_file}")
           else
-            puts "Not a challenge directory."
+            puts "Not a kata directory."
           end
         end
       end
 
-      desc 'Submit challenge'
+      desc 'Submit kata'
       command :submit do |c|
         c.action do |global_options, options, args|
           require 'rest_client'

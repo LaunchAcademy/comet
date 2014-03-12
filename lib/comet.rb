@@ -1,6 +1,6 @@
 require 'comet/exceptions'
 require 'comet/api'
-require 'comet/challenge'
+require 'comet/kata'
 require 'comet/version'
 require 'comet/init'
 require 'comet/runner'

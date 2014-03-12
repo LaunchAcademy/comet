@@ -15,7 +15,7 @@ spec = Gem::Specification.new do |s|
 bin/comet
 lib/comet.rb
 lib/comet/api.rb
-lib/comet/challenge.rb
+lib/comet/kata.rb
 lib/comet/init.rb
 lib/comet/version.rb
 lib/comet/runner.rb
