@@ -20,12 +20,12 @@ describe 'check for update' do
     end
 
     it 'notifies user to update the gem' do
-      stdout, stderr = capture_output { Comet::Runner.go(['list'], workdir) }
+      stdout, stderr = capture_output { Comet::Runner.go(['list'], work_dir) }
       expect(stderr).to include(update_notice)
     end
 
     it 'does not notify the user when running a test suite' do
-      stdout, stderr = capture_output { Comet::Runner.go(['test'], workdir) }
+      stdout, stderr = capture_output { Comet::Runner.go(['test'], work_dir) }
       expect(stderr).to_not include(update_notice)
     end
   end
@@ -36,7 +36,7 @@ describe 'check for update' do
     end
 
     it 'does not notify user to update the gem' do
-      stdout, stderr = capture_output { Comet::Runner.go(['list'], workdir) }
+      stdout, stderr = capture_output { Comet::Runner.go(['list'], work_dir) }
       expect(stderr).to_not include(update_notice)
     end
 

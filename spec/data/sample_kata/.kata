@@ -1,0 +1,5 @@
+---
+name: Sample Kata
+difficulty: 1
+test_runner: rspec
+id: 123
