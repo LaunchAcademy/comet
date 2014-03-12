@@ -1,6 +1,6 @@
 require 'shellwords'
 
-class Comet::Challenge
+class Comet::Kata
   attr_reader :id, :name, :slug, :download_link, :basedir
 
   def initialize(params)
@@ -20,16 +20,16 @@ class Comet::Challenge
 
   class << self
     def list(config)
-      Comet::API.get_challenges(config)
+      Comet::API.get_katas(config)
     end
 
     def find(config, id)
-      challenge_info = Comet::API.get_challenge(config, id)
+      kata_info = Comet::API.get_kata(config, id)
 
-      if challenge_info.nil?
-        raise ArgumentError.new("Could not find challenge with id = #{id}")
+      if kata_info.nil?
+        raise ArgumentError.new("Could not find kata with id = #{id}")
       else
-        Comet::Challenge.new(challenge_info.merge({ basedir: config['basedir'] }))
+        Comet::Kata.new(kata_info.merge({ basedir: config['basedir'] }))
       end
     end
   end

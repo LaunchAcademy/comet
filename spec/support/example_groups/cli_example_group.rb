@@ -8,9 +8,9 @@ module CliExampleGroup
       let(:comet_settings) { comet_settings_sample(workdir) }
 
       before :each do
-        Comet::API.stub(:get_challenges).and_return(challenges_index_sample)
+        Comet::API.stub(:get_katas).and_return(katas_index_sample)
+        Comet::API.stub(:get_kata)
         Comet::API.stub(:latest_gem_version).and_return('0.0.0')
-        Comet::API.stub(:get_challenge)
         Comet::API.stub(:download_archive)
 
         File.write(config_file, comet_settings.to_yaml)
