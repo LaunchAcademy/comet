@@ -65,11 +65,10 @@ module Comet
       desc 'Run test suite'
       command :test do |c|
         c.action do |global_options, options, args|
-          current_dir = cwd
-          info_file = File.join(current_dir, '.kata')
+          kata_file = Comet::Kata.find_kata_dir(cwd)
 
-          if File.exists?(info_file)
-            kata_info = YAML.load(File.read(info_file))
+          if !kata_file.nil?
+            kata_info = YAML.load(File.read(kata_file))
 
             case kata_info['test_runner']
             when 'ruby'
@@ -80,12 +79,13 @@ module Comet
               runner = 'ruby'
             end
 
-            slug = File.basename(current_dir)
-            test_file = File.join(current_dir, 'test', "#{slug}_test.rb")
+            kata_dir = File.dirname(kata_file)
+            slug = File.basename(kata_dir)
+            test_file = File.join(kata_dir, 'test', "#{slug}_test.rb")
 
-            exec("#{runner} #{test_file}")
+            Kernel.exec("#{runner} #{test_file}")
           else
-            puts "Not a kata directory."
+            $stderr.puts "\e[31mNot a kata directory.\e[0m"
           end
         end
       end

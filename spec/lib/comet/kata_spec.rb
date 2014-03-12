@@ -75,6 +75,40 @@ describe Comet::Kata do
     end
   end
 
+  describe '.find_kata_dir' do
+    let(:kata_dir) { Dir.mktmpdir('comet_test', '/tmp') }
+    let(:kata_config_file) { File.join(kata_dir, '.kata') }
+    let(:subdir) { File.join(kata_dir, 'subdir') }
+
+    after :each do
+      FileUtils.remove_entry_secure(kata_dir)
+    end
+
+    context 'when in a kata directory' do
+      before :each do
+        FileUtils.touch(kata_config_file)
+      end
+
+      it 'returns the .kata filepath' do
+        file = Comet::Kata.find_kata_dir(kata_dir)
+        expect(file).to eq(kata_config_file)
+      end
+
+      it 'checks parent directories when within a subdirectory' do
+        FileUtils.mkdir(subdir)
+
+        file = Comet::Kata.find_kata_dir(subdir)
+        expect(file).to eq(kata_config_file)
+      end
+    end
+
+    context 'when not in a kata directory' do
+      it 'returns nil' do
+        expect(Comet::Kata.find_kata_dir(kata_dir)).to eq(nil)
+      end
+    end
+  end
+
   describe '#download' do
     let(:basedir) { Dir.mktmpdir }
 

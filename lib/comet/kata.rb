@@ -18,18 +18,32 @@ class Comet::Kata
     File.join(basedir, slug)
   end
 
-  class << self
-    def list(config)
-      Comet::API.get_katas(config)
+  def self.list(config)
+    Comet::API.get_katas(config)
+  end
+
+  def self.find(config, id)
+    kata_info = Comet::API.get_kata(config, id)
+
+    if kata_info.nil?
+      raise ArgumentError.new("Could not find kata with id = #{id}")
+    else
+      Comet::Kata.new(kata_info.merge({ basedir: config['basedir'] }))
     end
+  end
 
-    def find(config, id)
-      kata_info = Comet::API.get_kata(config, id)
+  def self.find_kata_dir(dir)
+    kata_file = File.join(dir, '.kata')
 
-      if kata_info.nil?
-        raise ArgumentError.new("Could not find kata with id = #{id}")
+    if File.exists?(kata_file)
+      kata_file
+    else
+      parent_dir = File.dirname(dir)
+
+      if parent_dir != '/' && parent_dir != '.'
+        find_kata_dir(parent_dir)
       else
-        Comet::Kata.new(kata_info.merge({ basedir: config['basedir'] }))
+        nil
       end
     end
   end
