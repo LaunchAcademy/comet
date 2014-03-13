@@ -68,22 +68,7 @@ module Comet
           kata_file = Comet::Kata.find_kata_dir(cwd)
 
           if !kata_file.nil?
-            kata_info = YAML.load(File.read(kata_file))
-
-            case kata_info['test_runner']
-            when 'ruby'
-              runner = 'ruby'
-            when 'rspec'
-              runner = 'rspec --color --fail-fast'
-            else
-              runner = 'ruby'
-            end
-
-            kata_dir = File.dirname(kata_file)
-            slug = File.basename(kata_dir)
-            test_file = File.join(kata_dir, 'test', "#{slug}_test.rb")
-
-            Kernel.exec("#{runner} #{test_file}")
+            Comet::Tester.run_test_suite(kata_file)
           else
             $stderr.puts "\e[31mNot a kata directory.\e[0m"
           end

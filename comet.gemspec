@@ -18,6 +18,7 @@ lib/comet/api.rb
 lib/comet/kata.rb
 lib/comet/init.rb
 lib/comet/version.rb
+lib/comet/tester.rb
 lib/comet/runner.rb
 lib/comet/exceptions.rb
 lib/helpers.rb
