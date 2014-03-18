@@ -23,7 +23,7 @@ module Comet
       response = request_with_token("#{config['server']}/api/v1/challenges/#{id}.json",
         config['token'])
 
-      if response.code == '200'
+      if response.code == 200
         results = JSON.parse(response.body, symbolize_names: true)
         results[:challenge]
       else
