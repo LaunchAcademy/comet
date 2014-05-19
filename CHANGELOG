@@ -1,3 +1,7 @@
+== 0.0.8
+* Checks for updated version when running commands over network.
+* Can run `comet test` in subdirectories.
+
 == 0.0.7
 * Fixed a bug where you couldn't submit solutions.
 * `comet list` sorts challenges by topic and then by difficulty.
